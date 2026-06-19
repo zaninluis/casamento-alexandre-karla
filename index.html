@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casamento - Alexandre e Karla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="principal.css">
+</head>
+<body>
+
+    <!-- Header com Carrinho -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">A <span class="amp">&</span> K</div>
+            <button class="cart-btn" onclick="abrirCarrinho()">
+                🛒 Carrinho
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal do Carrinho -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Seu Carrinho</h2>
+                <button class="close-btn" onclick="fecharCarrinho()">✕</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Carrinho vazio</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total:</strong>
+                    <span id="cartTotal">R$ 0,00</span>
+                </div>
+                <button class="btn-checkout" onclick="abrirFormulario()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal do PIX (QR Code gerado na hora) -->
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-content">
+            <button class="close-btn" onclick="fecharQRCode()">✕</button>
+            <h2>Pague com PIX</h2>
+            <p class="pix-valor">Total: <strong id="pixValor">R$ 0,00</strong></p>
+            <div class="qr-image" id="pixQrCode"></div>
+            <p class="qr-instrucoes">Escaneie o QR Code no app do seu banco<br>ou use o Pix Copia e Cola abaixo:</p>
+            <div class="pix-copia-cola"><code id="pixCodigo"></code></div>
+            <button class="btn-form" id="btnCopiarPix" onclick="copiarPix()">📋 Copiar código</button>
+            <p class="pix-aviso">O presente cai direto na conta dos noivos 💛</p>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div class="formulario-modal" id="formularioModal">
+        <div class="formulario-content">
+            <button class="close-btn" onclick="fecharFormulario()">✕</button>
+
+            <!-- Etapa 1: dados -->
+            <div id="etapaDados">
+                <h2>Dados para Contato</h2>
+                <form id="contatoForm" onsubmit="escolherPagamento(event)">
+                    <div class="form-group">
+                        <label for="nomePresente">Nome Completo:</label>
+                        <input type="text" id="nomePresente" name="nome" required placeholder="Seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonPresente">Telefone/Celular:</label>
+                        <input type="tel" id="telefonPresente" name="telefone" required placeholder="(11) 99999-9999">
+                    </div>
+                    <button type="submit" class="btn-form">Continuar</button>
+                </form>
+            </div>
+
+            <!-- Etapa 2: forma de pagamento -->
+            <div id="etapaPagamento" style="display:none;">
+                <h2>Como pagar?</h2>
+                <button class="btn-form btn-pix" onclick="pagarComPix()">📱 PIX — na hora, sem login</button>
+                <button class="btn-form btn-mp" onclick="pagarComMercadoPago()">💳 Cartão ou Boleto</button>
+                <p class="form-voltar" onclick="voltarDados()">← voltar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: url('hero.jpg');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-pre">juntos para sempre</p>
+            <h1 class="hero-names">Alexandre <span class="amp-hero">&</span> Karla</h1>
+            <p class="hero-date">08 · Janeiro · 2027</p>
+
+            <!-- Contagem Regressiva -->
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-dias">00</span>
+                    <span class="countdown-label">dias</span>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-horas">00</span>
+                    <span class="countdown-label">horas</span>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-min">00</span>
+                    <span class="countdown-label">minutos</span>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-seg">00</span>
+                    <span class="countdown-label">segundos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="scroll-hint">
+            <span>↓</span>
+        </div>
+    </section>
+
+    <!-- Seção de Presentes com Carrossel -->
+    <section class="presentes">
+        <div class="container">
+            <p class="section-eyebrow">lista de presentes</p>
+            <h2>Ajude-nos a<br><em>montar nossa casa</em></h2>
+            
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" onclick="prevSlide()">❮</button>
+                
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <div class="gift-card">
+                            <div class="gift-icon">🧊</div>
+                            <h3>Geladeira</h3>
+                            <p>Geladeira Inox 2 Portas</p>
+                            <p class="price">R$ 2.500</p>
+                            <button class="btn" onclick="adicionarCarrinho('Geladeira', 2500)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🔥</div>
+                            <h3>Fogão</h3>
+                            <p>Fogão 5 Bocas com Forno</p>
+                            <p class="price">R$ 1.200</p>
+                            <button class="btn" onclick="adicionarCarrinho('Fogão', 1200)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🍽️</div>
+                            <h3>Jogo de Louça</h3>
+                            <p>Serviço de Louça 30 Peças</p>
+                            <p class="price">R$ 350</p>
+                            <button class="btn" onclick="adicionarCarrinho('Jogo de Louça', 350)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🛁</div>
+                            <h3>Jogo de Toalhas</h3>
+                            <p>Kit com 8 Toalhas Premium</p>
+                            <p class="price">R$ 400</p>
+                            <button class="btn" onclick="adicionarCarrinho('Jogo de Toalhas', 400)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🛏️</div>
+                            <h3>Jogo de Cama</h3>
+                            <p>Jogo Casal 200 Fios 4 Peças</p>
+                            <p class="price">R$ 250</p>
+                            <button class="btn" onclick="adicionarCarrinho('Jogo de Cama', 250)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🌊</div>
+                            <h3>Micro-ondas</h3>
+                            <p>Micro-ondas 30L Inox</p>
+                            <p class="price">R$ 600</p>
+                            <button class="btn" onclick="adicionarCarrinho('Micro-ondas', 600)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">🥤</div>
+                            <h3>Liquidificador</h3>
+                            <p>Liquidificador 1200W 6 Velocidades</p>
+                            <p class="price">R$ 280</p>
+                            <button class="btn" onclick="adicionarCarrinho('Liquidificador', 280)">Presentear</button>
+                        </div>
+
+                        <div class="gift-card">
+                            <div class="gift-icon">👨‍🍳</div>
+                            <h3>Jogo de Panelas</h3>
+                            <p>Conjunto 7 Peças Antiaderente</p>
+                            <p class="price">R$ 450</p>
+                            <button class="btn" onclick="adicionarCarrinho('Jogo de Panelas', 450)">Presentear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn next" onclick="nextSlide()">❯</button>
+            </div>
+
+            <div class="carousel-dots">
+                <span class="dot" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-names">Alexandre <span class="amp">&</span> Karla</p>
+        <p class="footer-sub">© 2026 · com amor ♥</p>
+    </footer>
+
+    <script src="vendor/qrcode.min.js"></script>
+    <script src="principal.js"></script>
+</body>
+</html>
