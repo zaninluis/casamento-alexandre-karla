@@ -123,92 +123,14 @@
         </div>
     </section>
 
-    <!-- Seção de Presentes com Carrossel -->
+    <!-- Seção de Presentes em grade -->
     <section class="presentes">
         <div class="container">
             <p class="section-eyebrow">lista de presentes</p>
-            <h2>Ajude-nos a<br><em>montar nossa casa</em></h2>
+            <h2>Ajude os noivos a<br><em>sobreviver ao casamento</em></h2>
             
-            <div class="carousel-wrapper">
-                <button class="carousel-btn prev" onclick="prevSlide()">❮</button>
-                
-                <div class="carousel">
-                    <div class="carousel-track">
-                        <div class="gift-card">
-                            <div class="gift-icon">🧊</div>
-                            <h3>Geladeira</h3>
-                            <p>Geladeira Inox 2 Portas</p>
-                            <p class="price">R$ 2.500</p>
-                            <button class="btn" onclick="adicionarCarrinho('Geladeira', 2500)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🔥</div>
-                            <h3>Fogão</h3>
-                            <p>Fogão 5 Bocas com Forno</p>
-                            <p class="price">R$ 1.200</p>
-                            <button class="btn" onclick="adicionarCarrinho('Fogão', 1200)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🍽️</div>
-                            <h3>Jogo de Louça</h3>
-                            <p>Serviço de Louça 30 Peças</p>
-                            <p class="price">R$ 350</p>
-                            <button class="btn" onclick="adicionarCarrinho('Jogo de Louça', 350)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🛁</div>
-                            <h3>Jogo de Toalhas</h3>
-                            <p>Kit com 8 Toalhas Premium</p>
-                            <p class="price">R$ 400</p>
-                            <button class="btn" onclick="adicionarCarrinho('Jogo de Toalhas', 400)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🛏️</div>
-                            <h3>Jogo de Cama</h3>
-                            <p>Jogo Casal 200 Fios 4 Peças</p>
-                            <p class="price">R$ 250</p>
-                            <button class="btn" onclick="adicionarCarrinho('Jogo de Cama', 250)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🌊</div>
-                            <h3>Micro-ondas</h3>
-                            <p>Micro-ondas 30L Inox</p>
-                            <p class="price">R$ 600</p>
-                            <button class="btn" onclick="adicionarCarrinho('Micro-ondas', 600)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">🥤</div>
-                            <h3>Liquidificador</h3>
-                            <p>Liquidificador 1200W 6 Velocidades</p>
-                            <p class="price">R$ 280</p>
-                            <button class="btn" onclick="adicionarCarrinho('Liquidificador', 280)">Presentear</button>
-                        </div>
-
-                        <div class="gift-card">
-                            <div class="gift-icon">👨‍🍳</div>
-                            <h3>Jogo de Panelas</h3>
-                            <p>Conjunto 7 Peças Antiaderente</p>
-                            <p class="price">R$ 450</p>
-                            <button class="btn" onclick="adicionarCarrinho('Jogo de Panelas', 450)">Presentear</button>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="carousel-btn next" onclick="nextSlide()">❯</button>
-            </div>
-
-            <div class="carousel-dots">
-                <span class="dot" onclick="currentSlide(0)"></span>
-                <span class="dot" onclick="currentSlide(1)"></span>
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
-            </div>
+            <!-- Cards gerados pelo principal.js a partir do array PRESENTES -->
+            <div class="gift-grid" id="giftGrid"></div>
         </div>
     </section>
 

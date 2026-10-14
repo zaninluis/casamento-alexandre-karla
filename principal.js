@@ -26,97 +26,59 @@ function atualizarContagem() {
 atualizarContagem();
 setInterval(atualizarContagem, 1000);
 
-// ===== CARROUSSEL =====
-let currentSlideIndex = 0;
-const totalCards = 8;
+// ===== LISTA DE PRESENTES =====
+// Para adicionar/remover presentes, edite só este array (imagens em img/presentes/)
+// Opcional: enquadramento: 'inteira' (mostra a foto toda) ou uma posição CSS, ex. 'center top'
+const PRESENTES = [
+    { img: '01.jpg', nome: 'Só para dizer que não dei nada', preco: 152.00 },
+    { img: '02.jpg', nome: 'Primeiro jantar dos noivos', preco: 323.40 },
+    { img: '03.jpg', nome: 'Rolo de macarrão da noiva', preco: 172.20, enquadramento: 'inteira' },
+    { img: '04.jpg', nome: 'Capacete contra rolo de macarrão da noiva', preco: 172.20 },
+    { img: '05.jpg', nome: 'Tampão de ouvido para a noiva não escutar o noivo roncar', preco: 423.43 },
+    { img: '06.jpg', nome: 'Aumente 30% da sua chance de pegar o buquê', preco: 450.00 },
+    { img: '07.jpg', nome: 'Cobertor para a noiva que está sempre coberta de razão', preco: 182.66 },
+    { img: '08.jpg', nome: 'Jogo de cozinha moderno', preco: 1000.00 },
+    { img: '09.jpg', nome: 'Curso de culinária para a noiva', preco: 230.00 },
+    { img: '10.jpg', nome: 'Spa day para relaxar após 1 ano organizando o casamento', preco: 400.00 },
+    { img: '11.jpg', nome: 'Ajudinha para a lua de mel', preco: 1500.00 },
+    { img: '12.jpg', nome: 'Prioridade na fila do buffet', preco: 560.00, enquadramento: 'center 20%' },
+    { img: '13.jpg', nome: 'Diária em hotel 5 estrelas', preco: 700.00 },
+    { img: '14.jpg', nome: 'Passagens para a lua de mel', preco: 3000.00 },
+    { img: '15.jpg', nome: 'Raspar o cabelo do noivo', preco: 15000.00 },
+    { img: '16.jpg', nome: 'Diária do pedreiro para a reforma do apartamento', preco: 170.00 },
+    { img: '17.jpg', nome: 'Cueca sexy para a noite de núpcias', preco: 316.00 },
+    { img: '18.jpg', nome: 'Taxa para a noiva não jogar o buquê para a sua namorada', preco: 700.00 },
+    { img: '19.jpg', nome: 'Vaquinha para o Luan Santana cantar no casamento', preco: 650.00 },
+    { img: '20.jpg', nome: 'Ajuda para pagar os boletos do casamento', preco: 550.00, enquadramento: 'center bottom' },
+    { img: '21.jpg', nome: 'Dei o melhor presente', preco: 1100.00 },
+];
 
-function renderDots(pages) {
-    const dotsContainer = document.querySelector('.carousel-dots');
-    if (!dotsContainer) return;
-    if (dotsContainer.children.length === pages) return;
-    dotsContainer.innerHTML = '';
-    for (let i = 0; i < pages; i++) {
-        const span = document.createElement('span');
-        span.className = 'dot';
-        span.setAttribute('onclick', `currentSlide(${i})`);
-        dotsContainer.appendChild(span);
-    }
+const formatarBRL = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+function renderPresentes() {
+    const grid = document.getElementById('giftGrid');
+    if (!grid) return;
+    grid.innerHTML = PRESENTES.map((p, i) => {
+        const estilo = p.enquadramento === 'inteira' ? 'object-fit: contain; background: #fff'
+            : p.enquadramento ? `object-position: ${p.enquadramento}` : '';
+        return `
+        <div class="gift-card">
+            <img class="gift-img" src="img/presentes/${p.img}" alt="${p.nome}" loading="lazy" style="${estilo}">
+            <h3>${p.nome}</h3>
+            <p class="price">${formatarBRL(p.preco)}</p>
+            <button class="btn" onclick="adicionarCarrinho(${i})">Presentear</button>
+        </div>`;
+    }).join('');
 }
 
-function nextSlide() {
-    const track = document.querySelector('.carousel-track');
-    const firstCard = document.querySelector('.gift-card');
-    if (!track || !firstCard) return;
-    const gap = 20;
-    const cardWidth = firstCard.offsetWidth;
-    const cardsPerViewLocal = Math.max(1, Math.floor(track.clientWidth / (cardWidth + gap)));
-    const maxSlides = Math.ceil(totalCards / cardsPerViewLocal) - 1;
-    currentSlideIndex = currentSlideIndex < maxSlides ? currentSlideIndex + 1 : 0;
-    updateCarousel();
-}
-
-function prevSlide() {
-    const track = document.querySelector('.carousel-track');
-    const firstCard = document.querySelector('.gift-card');
-    if (!track || !firstCard) return;
-    const gap = 20;
-    const cardWidth = firstCard.offsetWidth;
-    const cardsPerViewLocal = Math.max(1, Math.floor(track.clientWidth / (cardWidth + gap)));
-    const maxSlides = Math.ceil(totalCards / cardsPerViewLocal) - 1;
-    currentSlideIndex = currentSlideIndex > 0 ? currentSlideIndex - 1 : maxSlides;
-    updateCarousel();
-}
-
-function currentSlide(index) {
-    currentSlideIndex = index;
-    updateCarousel();
-}
-
-function updateCarousel() {
-    const track = document.querySelector('.carousel-track');
-    const firstCard = document.querySelector('.gift-card');
-    if (!firstCard) return;
-    const cardWidth = firstCard.offsetWidth;
-    const gap = 20;
-    const cardsPerViewLocal = Math.max(1, Math.floor(track.clientWidth / (cardWidth + gap)));
-    const step = cardsPerViewLocal * (cardWidth + gap);
-    // 1 card por view (mobile): centraliza o card ativo no carrossel
-    let offset = 0;
-    if (cardsPerViewLocal === 1) {
-        const carouselWidth = track.parentElement.clientWidth;
-        const padL = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-        offset = (carouselWidth - cardWidth) / 2 - padL;
-    }
-    track.style.transform = `translateX(${offset - currentSlideIndex * step}px)`;
-    const pages = Math.ceil(totalCards / cardsPerViewLocal);
-    renderDots(pages);
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach(d => d.classList.remove('active'));
-    const dotIndex = Math.min(currentSlideIndex, dots.length - 1);
-    if (dots[dotIndex]) dots[dotIndex].classList.add('active');
-}
-
-let resizeTimeout;
-window.addEventListener('resize', function () {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        const track = document.querySelector('.carousel-track');
-        const firstCard = document.querySelector('.gift-card');
-        if (!track || !firstCard) return;
-        const gap = 20;
-        const cardWidth = firstCard.getBoundingClientRect().width;
-        const cardsPerViewLocal = Math.max(1, Math.floor(track.clientWidth / (cardWidth + gap)));
-        const maxSlides = Math.max(0, Math.ceil(totalCards / cardsPerViewLocal) - 1);
-        if (currentSlideIndex > maxSlides) currentSlideIndex = maxSlides;
-        updateCarousel();
-    }, 120);
-});
+renderPresentes();
 
 // ===== CARRINHO =====
 let carrinho = [];
 
-function adicionarCarrinho(nome, preco) {
-    carrinho.push({ id: Date.now(), nome, preco: parseFloat(preco) });
+function adicionarCarrinho(indice) {
+    const presente = PRESENTES[indice];
+    carrinho.push({ id: Date.now(), nome: presente.nome, preco: presente.preco });
     atualizarContador();
     atualizarCarrinho();
     const botao = event.target;
@@ -149,13 +111,13 @@ function atualizarCarrinho() {
         html += `<div class="cart-item">
             <div class="cart-item-info">
                 <h4>${item.nome}</h4>
-                <div class="cart-item-price">R$ ${item.preco.toFixed(2).replace('.', ',')}</div>
+                <div class="cart-item-price">${formatarBRL(item.preco)}</div>
             </div>
             <button class="cart-item-remove" onclick="removerDoCarrinho(${item.id})">✕</button>
         </div>`;
     }
     cartItemsDiv.innerHTML = html;
-    cartTotalDiv.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+    cartTotalDiv.textContent = formatarBRL(total);
 }
 
 function removerDoCarrinho(id) {
@@ -210,7 +172,7 @@ async function pagarComMercadoPago() {
 function pagarComPix() {
     const total = carrinho.reduce((s, i) => s + i.preco, 0);
     const codigo = montarPayloadPix(total);
-    document.getElementById('pixValor').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+    document.getElementById('pixValor').textContent = formatarBRL(total);
     document.getElementById('pixCodigo').textContent = codigo;
     renderizarQr('pixQrCode', codigo);
     fecharFormulario();
@@ -327,30 +289,6 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Swipe por toque no carrossel (mobile) — usa a mesma paginação das setas
-function initCarouselSwipe() {
-    const track = document.querySelector('.carousel-track');
-    if (!track) return;
-    let startX = 0, startY = 0, swiping = false;
-    track.addEventListener('touchstart', function (e) {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        swiping = true;
-    }, { passive: true });
-    track.addEventListener('touchend', function (e) {
-        if (!swiping) return;
-        swiping = false;
-        const dx = e.changedTouches[0].clientX - startX;
-        const dy = e.changedTouches[0].clientY - startY;
-        // só conta como swipe horizontal se o movimento lateral for claro
-        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-            if (dx < 0) nextSlide(); else prevSlide();
-        }
-    }, { passive: true });
-}
-
 window.addEventListener('load', function () {
-    updateCarousel();
     atualizarContador();
-    initCarouselSwipe();
 });
