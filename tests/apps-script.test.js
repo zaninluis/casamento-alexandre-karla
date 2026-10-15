@@ -10,7 +10,7 @@ const CABECALHO = ['Data/hora', 'Nome', 'Vai?', 'Confirmado por'];
 const copiar = (valor) => JSON.parse(JSON.stringify(valor));
 
 // Simula o pedaço do Google que o script usa e roda o .gs num contexto isolado
-function criarAmbiente() {
+function criarAmbiente(idioma = 'en_US') {
   const abas = {};
   const novaAba = () => {
     const linhas = [];
@@ -26,6 +26,7 @@ function criarAmbiente() {
     };
   };
   const planilha = {
+    getSpreadsheetLocale: () => idioma,
     getSheetByName: (nome) => abas[nome] || null,
     insertSheet: (nome) => (abas[nome] = novaAba()),
   };
@@ -93,7 +94,7 @@ test('sempre libera a trava depois de gravar', () => {
 });
 
 test('configurar cria as abas e as fórmulas do resumo', () => {
-  const amb = criarAmbiente();
+  const amb = criarAmbiente('en_US');
   amb.contexto.configurar();
   assert.deepEqual(copiar(amb.abas['Confirmações'].linhas), [CABECALHO]);
   const f = amb.abas['Resumo'].formulas;
@@ -106,4 +107,13 @@ test('abre a planilha pelo ID configurado', () => {
   const amb = criarAmbiente();
   amb.post(JSON.stringify({ token: 'segredo', vai: true, nomes: ['Maria'] }));
   assert.deepEqual(amb.idsAbertos, ['id-teste']);
+});
+
+test('em planilha em português as fórmulas usam ponto e vírgula', () => {
+  const amb = criarAmbiente('pt_BR');
+  amb.contexto.configurar();
+  const f = amb.abas['Resumo'].formulas;
+  assert.equal(f.B1, `=COUNTIF('Confirmações'!C:C;"Sim")`);
+  assert.equal(f.B2, `=COUNTIF('Confirmações'!C:C;"Não")`);
+  assert.doesNotMatch(f.B3, /,/);
 });

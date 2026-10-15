@@ -19,11 +19,24 @@ function configurar() {
   const resumo = planilha.getSheetByName(ABA_RESUMO) || planilha.insertSheet(ABA_RESUMO);
   resumo.getRange('A1:A3').setValues([['Vão'], ['Não vão'], ['Confirmações recebidas']]);
   const ref = `'${ABA_CONFIRMACOES}'`;
-  resumo.getRange('B1').setFormula(`=COUNTIF(${ref}!C:C,"Sim")`);
-  resumo.getRange('B2').setFormula(`=COUNTIF(${ref}!C:C,"Não")`);
+  const s = separadorDeArgumentos(planilha);
+  resumo.getRange('B1').setFormula(`=COUNTIF(${ref}!C:C${s}"Sim")`);
+  resumo.getRange('B2').setFormula(`=COUNTIF(${ref}!C:C${s}"Não")`);
   resumo.getRange('B3').setFormula(
-    `=IFERROR(COUNTUNIQUE(FILTER(${ref}!A2:A&${ref}!D2:D,${ref}!A2:A<>"")),0)`
+    `=IFERROR(COUNTUNIQUE(FILTER(${ref}!A2:A&${ref}!D2:D${s}${ref}!A2:A<>""))${s}0)`
   );
+}
+
+// Planilhas com vírgula decimal (ex.: pt_BR) separam os argumentos das fórmulas com ";"
+function separadorDeArgumentos(planilha) {
+  const idioma = String(planilha.getSpreadsheetLocale() || 'en_US').replace('_', '-');
+  let virgulaDecimal = /^pt/i.test(idioma);
+  try {
+    virgulaDecimal = virgulaDecimal || (1.5).toLocaleString(idioma).indexOf(',') !== -1;
+  } catch (erro) {
+    // idioma desconhecido: fica com a regra acima
+  }
+  return virgulaDecimal ? ';' : ',';
 }
 
 function doPost(e) {
