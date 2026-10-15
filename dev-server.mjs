@@ -14,7 +14,11 @@ const raiz = dirname(fileURLToPath(import.meta.url));
 // Carrega variáveis do .env (Node 20.6+)
 try { process.loadEnvFile(join(raiz, '.env')); } catch { /* sem .env: roda mesmo assim */ }
 
-const { default: criarPagamento } = await import('./api/criar-pagamento.js');
+// Funções de api/ que rodariam sozinhas na Vercel
+const ROTAS_API = {
+  '/api/criar-pagamento': (await import('./api/criar-pagamento.js')).default,
+  '/api/confirmar-presenca': (await import('./api/confirmar-presenca.js')).default,
+};
 
 const TIPOS = {
   '.html': 'text/html; charset=utf-8',
@@ -28,8 +32,9 @@ const TIPOS = {
 const servidor = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  // ---- Rota da API (executa a função serverless) ----
-  if (url.pathname === '/api/criar-pagamento') {
+  // ---- Rotas da API (executam as funções serverless) ----
+  const funcaoApi = ROTAS_API[url.pathname];
+  if (funcaoApi) {
     let body = '';
     for await (const chunk of req) body += chunk;
     req.body = body;
@@ -39,7 +44,7 @@ const servidor = createServer(async (req, res) => {
       res.end(JSON.stringify(obj));
     };
     try {
-      await criarPagamento(req, res);
+      await funcaoApi(req, res);
     } catch (e) {
       res.statusCode = 500;
       res.end(JSON.stringify({ erro: 'Falha na função', detalhe: String(e) }));
