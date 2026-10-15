@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Site de casamento Alexandre & Karla — lista de presentes com pagamento via Mercado Pago"
+  "description": "Site de casamento Alexandre & Karla — lista de presentes com pagamento via Mercado Pago",
+  "scripts": {
+    "test": "node --test"
+  }
 }
