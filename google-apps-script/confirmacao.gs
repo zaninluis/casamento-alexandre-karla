@@ -1,16 +1,18 @@
-// Apps Script da planilha de confirmações de presença do casamento.
-// Cole este código em Extensões → Apps Script, na planilha dos noivos.
-// 1) Troque o TOKEN pelo código recebido.
+// Apps Script que grava as confirmações de presença do casamento numa planilha Google.
+// Projeto independente (script.new) apontando para a planilha pelo ID.
+// 1) Troque o TOKEN pelo código recebido e o ID_PLANILHA pelo ID da planilha
+//    (o trecho entre /d/ e /edit no endereço dela).
 // 2) Rode configurar() uma vez e autorize.
 // 3) Implantar → Nova implantação → App da Web (executar como: eu; acesso: qualquer pessoa).
 
 const TOKEN = 'COLE_AQUI_O_TOKEN';
+const ID_PLANILHA = 'COLE_AQUI_O_ID_DA_PLANILHA';
 const ABA_CONFIRMACOES = 'Confirmações';
 const ABA_RESUMO = 'Resumo';
 const CABECALHO = ['Data/hora', 'Nome', 'Vai?', 'Confirmado por'];
 
 function configurar() {
-  const planilha = SpreadsheetApp.getActiveSpreadsheet();
+  const planilha = SpreadsheetApp.openById(ID_PLANILHA);
   const aba = abaConfirmacoes(planilha);
   aba.setFrozenRows(1);
 
@@ -40,7 +42,7 @@ function doPost(e) {
   const trava = LockService.getScriptLock();
   trava.waitLock(10000);
   try {
-    const aba = abaConfirmacoes(SpreadsheetApp.getActiveSpreadsheet());
+    const aba = abaConfirmacoes(SpreadsheetApp.openById(ID_PLANILHA));
     const quando = Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm');
     const nomes = dados.nomes.map(neutralizar);
     const vai = dados.vai ? 'Sim' : 'Não';

@@ -30,8 +30,9 @@ function criarAmbiente() {
     insertSheet: (nome) => (abas[nome] = novaAba()),
   };
   let travas = 0;
+  const idsAbertos = [];
   const contexto = {
-    SpreadsheetApp: { getActiveSpreadsheet: () => planilha },
+    SpreadsheetApp: { openById: (id) => { idsAbertos.push(id); return planilha; } },
     LockService: { getScriptLock: () => ({ waitLock: () => { travas++; }, releaseLock: () => { travas--; } }) },
     Utilities: { formatDate: () => '14/11/2026 19:02' },
     ContentService: {
@@ -40,9 +41,12 @@ function criarAmbiente() {
     },
   };
   vm.createContext(contexto);
-  vm.runInContext(CODIGO.replace("'COLE_AQUI_O_TOKEN'", "'segredo'"), contexto);
+  vm.runInContext(
+    CODIGO.replace("'COLE_AQUI_O_TOKEN'", "'segredo'").replace("'COLE_AQUI_O_ID_DA_PLANILHA'", "'id-teste'"),
+    contexto,
+  );
   const post = (conteudo) => JSON.parse(contexto.doPost({ postData: { contents: conteudo } }).texto);
-  return { contexto, abas, post, travas: () => travas };
+  return { contexto, abas, post, travas: () => travas, idsAbertos };
 }
 
 test('grava uma linha por pessoa, com cabeçalho', () => {
@@ -96,4 +100,10 @@ test('configurar cria as abas e as fórmulas do resumo', () => {
   assert.match(f.B1, /COUNTIF\('Confirmações'!C:C,"Sim"\)/);
   assert.match(f.B2, /COUNTIF\('Confirmações'!C:C,"Não"\)/);
   assert.match(f.B3, /COUNTUNIQUE/);
+});
+
+test('abre a planilha pelo ID configurado', () => {
+  const amb = criarAmbiente();
+  amb.post(JSON.stringify({ token: 'segredo', vai: true, nomes: ['Maria'] }));
+  assert.deepEqual(amb.idsAbertos, ['id-teste']);
 });
