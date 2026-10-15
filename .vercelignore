@@ -6,3 +6,5 @@ node_modules
 *.zip
 .DS_Store
 docs
+tests
+google-apps-script
