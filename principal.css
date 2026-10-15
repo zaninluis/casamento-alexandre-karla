@@ -609,7 +609,7 @@ body {
     margin-bottom: 12px;
 }
 
-.presentes h2, .locais h2 {
+.presentes h2, .locais h2, .presenca h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 56px;
     text-align: center;
@@ -619,7 +619,7 @@ body {
     line-height: 1.2;
 }
 
-.presentes h2 em, .locais h2 em {
+.presentes h2 em, .locais h2 em, .presenca h2 em {
     font-family: 'Great Vibes', cursive;
     font-style: normal;
     font-size: 72px;
@@ -788,6 +788,170 @@ body {
     text-decoration: none;
 }
 
+/* ===== CONFIRMAÇÃO DE PRESENÇA ===== */
+html { scroll-behavior: smooth; }
+
+.hero-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.25s;
+}
+
+.hero-cta:hover { background: #fff; color: #5a3e35; }
+
+.presenca {
+    padding: 100px 20px 80px;
+    background: #f7f1ea;
+    scroll-margin-top: 70px;
+}
+
+.presenca h2 { margin-bottom: 16px; }
+
+.presenca-prazo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #8b6f5e;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.presenca-card {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    border: 1px solid #ede8e3;
+    border-radius: 12px;
+    background: #fff;
+}
+
+/* garante que [hidden] vença os display definidos nas classes */
+.presenca-card [hidden] { display: none !important; }
+
+.presenca-pergunta {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8b6f5e;
+    margin-bottom: 12px;
+}
+
+.presenca-opcoes {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.presenca-opcao {
+    flex: 1;
+    padding: 14px 12px;
+    border: 1.5px solid #e2d6c8;
+    border-radius: 10px;
+    background: #fff;
+    color: #5a3e35;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.presenca-opcao:hover { border-color: #c9a882; }
+
+.presenca-opcao[aria-pressed="true"] {
+    background: #8b6f5e;
+    border-color: #8b6f5e;
+    color: #fff;
+}
+
+.presenca-nomes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.presenca-nome { display: flex; gap: 8px; }
+
+.presenca-nome input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #e2d6c8;
+    border-radius: 8px;
+    background: #fff;
+    color: #2c2c2c;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+}
+
+.presenca-nome input:focus {
+    outline: none;
+    border-color: #c9a882;
+    box-shadow: 0 0 0 3px rgba(201, 168, 130, 0.18);
+}
+
+.presenca-remover {
+    width: 44px;
+    border: 1px solid #e2d6c8;
+    border-radius: 8px;
+    background: #fff;
+    color: #8b6f5e;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.presenca-remover:hover { color: #c9836a; border-color: #c9836a; }
+
+.presenca-adicionar {
+    display: inline-block;
+    padding: 6px 0;
+    margin-bottom: 20px;
+    border: none;
+    background: none;
+    color: #c9836a;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.presenca-isca {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.presenca-erro {
+    color: #b3261e;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.presenca-sucesso {
+    padding: 24px 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #5a3e35;
+}
+
 /* ===== FOOTER ===== */
 footer {
     padding: 48px 20px;
@@ -829,8 +993,8 @@ footer {
     .gift-card { flex: 0 0 calc((100% - 16px) / 2); padding: 12px 12px 18px; }
     .gift-card h3 { font-size: 17px; }
 
-    .presentes h2, .locais h2 { font-size: 40px; }
-    .presentes h2 em, .locais h2 em { font-size: 52px; }
+    .presentes h2, .locais h2, .presenca h2 { font-size: 40px; }
+    .presentes h2 em, .locais h2 em, .presenca h2 em { font-size: 52px; }
 }
 
 @media (max-width: 480px) {
@@ -852,11 +1016,15 @@ footer {
     .price { font-size: 16px !important; margin: 10px 0 !important; }
     .btn { padding: 8px 14px; font-size: 10px; letter-spacing: 1px; margin-top: 4px; }
 
-    .presentes h2, .locais h2 { font-size: 32px; }
+    .presentes h2, .locais h2, .presenca h2 { font-size: 32px; }
     .locais { padding: 72px 16px 56px; }
     .local-card { padding: 24px 16px 22px; }
     .local-card h3 { font-size: 22px; }
     .local-mapa { height: 200px; }
-    .presentes h2 em, .locais h2 em { font-size: 40px; }
+    .presenca { padding: 72px 16px 56px; }
+    .presenca-card { padding: 24px 18px; }
+    .presenca-opcoes { flex-direction: column; }
+    .hero-cta { margin-top: 24px; padding: 12px 26px; }
+    .presentes h2 em, .locais h2 em, .presenca h2 em { font-size: 40px; }
     .section-eyebrow { font-size: 10px; }
 }

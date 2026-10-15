@@ -115,6 +115,7 @@
                     <span class="countdown-label">segundos</span>
                 </div>
             </div>
+            <a href="#confirmar-presenca" class="hero-cta">Confirmar presença</a>
         </div>
 
         <!-- Scroll hint -->
@@ -153,6 +154,37 @@
         </div>
     </section>
 
+    <!-- Confirmação de presença (grava na planilha Google dos noivos) -->
+    <section class="presenca" id="confirmar-presenca">
+        <div class="container">
+            <p class="section-eyebrow">lista de presença</p>
+            <h2>Confirme sua<br><em>presença</em></h2>
+            <p class="presenca-prazo">Confirme até 20 de dezembro de 2026</p>
+
+            <div class="presenca-card">
+                <form id="formPresenca" novalidate>
+                    <p class="presenca-pergunta">Você vai?</p>
+                    <div class="presenca-opcoes">
+                        <button type="button" class="presenca-opcao" data-vai="true" aria-pressed="false">Vou, com certeza! 🎉</button>
+                        <button type="button" class="presenca-opcao" data-vai="false" aria-pressed="false">Infelizmente não poderei ir</button>
+                    </div>
+
+                    <p class="presenca-pergunta">Nome de cada pessoa</p>
+                    <div id="presencaNomes" class="presenca-nomes"></div>
+                    <button type="button" id="presencaAdicionar" class="presenca-adicionar">+ adicionar pessoa</button>
+
+                    <!-- Campo isca: invisível para pessoas, robôs costumam preencher -->
+                    <input type="text" id="presencaSite" class="presenca-isca" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                    <p id="presencaErro" class="presenca-erro" role="alert" hidden></p>
+                    <button type="submit" id="presencaEnviar" class="btn-form">Enviar confirmação</button>
+                </form>
+
+                <p id="presencaSucesso" class="presenca-sucesso" role="status" hidden></p>
+            </div>
+        </div>
+    </section>
+
     <!-- Seção de Presentes em grade -->
     <section class="presentes">
         <div class="container">
@@ -172,5 +204,6 @@
 
     <script src="vendor/qrcode.min.js"></script>
     <script src="principal.js"></script>
+    <script src="presenca.js"></script>
 </body>
 </html>
