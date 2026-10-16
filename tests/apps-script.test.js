@@ -100,7 +100,8 @@ test('configurar cria as abas e as fórmulas do resumo', () => {
   const f = amb.abas['Resumo'].formulas;
   assert.match(f.B1, /COUNTIF\('Confirmações'!C:C,"Sim"\)/);
   assert.match(f.B2, /COUNTIF\('Confirmações'!C:C,"Não"\)/);
-  assert.match(f.B3, /COUNTUNIQUE/);
+  // ROWS(UNIQUE(...)) repassa o erro do FILTER vazio ao IFERROR (COUNTUNIQUE contaria o erro como 1)
+  assert.equal(f.B3, `=IFERROR(ROWS(UNIQUE(FILTER('Confirmações'!A2:A&'Confirmações'!D2:D,'Confirmações'!A2:A<>""))),0)`);
 });
 
 test('abre a planilha pelo ID configurado', () => {

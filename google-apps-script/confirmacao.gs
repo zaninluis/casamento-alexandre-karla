@@ -23,7 +23,7 @@ function configurar() {
   resumo.getRange('B1').setFormula(`=COUNTIF(${ref}!C:C${s}"Sim")`);
   resumo.getRange('B2').setFormula(`=COUNTIF(${ref}!C:C${s}"Não")`);
   resumo.getRange('B3').setFormula(
-    `=IFERROR(COUNTUNIQUE(FILTER(${ref}!A2:A&${ref}!D2:D${s}${ref}!A2:A<>""))${s}0)`
+    `=IFERROR(ROWS(UNIQUE(FILTER(${ref}!A2:A&${ref}!D2:D${s}${ref}!A2:A<>"")))${s}0)`
   );
 }
 
